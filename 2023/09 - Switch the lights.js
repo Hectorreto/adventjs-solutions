@@ -1,24 +1,24 @@
 function adjustLights(lights) {
   let err1 = 0
   let err2 = 0
-
-  lights.forEach((light, index) => {
-    if (index % 2 === 0) {
-      if (light === '🔴') {
-        err1++
-      }
-      if (light === '🟢') {
-        err2++
-      }
-    } else {
-      if (light === '🟢') {
-        err1++
-      }
-      if (light === '🔴') {
-        err2++
-      }
+  const mod = {
+    0: {
+      '🔴': [1, 0],
+      '🟢': [0, 1],
+    },
+    1: {
+      '🔴': [0, 1],
+      '🟢': [1, 0],
     }
-  })
+  }
+
+  let parity = 0
+
+  for (const light of lights) {
+    err1 += mod[parity][light][0]
+    err2 += mod[parity][light][1]
+    parity = 1 - parity
+  }
 
   return Math.min(err1, err2)
 }
