@@ -1,21 +1,19 @@
 function organizeGifts(gifts) {
-	let res = []
+	let res = ''
 	const regex = /(\d+)([^\d])/g
 	const matches = gifts.matchAll(regex)
 
-	for (const [_, quantity, item] of matches) {
-		const pallets = quantity / 50 - (quantity / 50 % 1)
-		const boxes = (quantity - pallets*50) / 10 - ((quantity - pallets*50) / 10 % 1)
-		const bag = quantity - pallets*50 - boxes*10
+	for (const [, quantity, item] of matches) {
+		const pallets = (quantity / 50) | 0
+		const boxes = ((quantity - pallets * 50) / 10) | 0
+		const bag = quantity % 10
 
-		res.push(
-      `[${item}]`.repeat(pallets),
-      `{${item}}`.repeat(boxes),
-      `(${item.repeat(bag)})`.repeat(bag > 0),
-    )
+		res += `[${item}]`.repeat(pallets)
+		res += `{${item}}`.repeat(boxes)
+		res += `(${item.repeat(bag)})`.repeat(bag > 0)
 	}
 	
-	return res.join('')
+	return res
 }
 
 const result1 = organizeGifts('76a11b')
